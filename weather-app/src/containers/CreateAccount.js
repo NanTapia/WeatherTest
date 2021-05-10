@@ -7,18 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import FacebookIcon from '@material-ui/icons/Facebook';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
-import { mdiGoogle } from '@mdi/js';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faFacebookSquare,
-    faGoogle,
-} from "@fortawesome/free-brands-svg-icons";
-
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Avatar from '@material-ui/core/Avatar';
 
 const styles = theme => ({
@@ -39,10 +29,44 @@ const styles = theme => ({
     },
 });
 
-class LogIn extends React.Component {
+class CreateAccount extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            username: "",
+            email: "",
+            password: "",
+            error: null,
+        };
+    }
+
+    onChangeHandler = (e) => {
+        const {name, value} = e.target;
+
+        if(name === 'username') {
+            this.setState({username: value});
+        }
+        if(name === 'email') {
+            this.setState({email: value});
+        }
+        else if(name === 'password'){
+            this.setState({password: value});
+        }
+    };
+
+    createAccountHandler = (e) => {
+        e.preventDefault();
+        console.log("____________")
+        console.log(this.state.username)
+        console.log(this.state.email)
+        console.log(this.state.password)
+    }
 
     render() {
         const {classes} = this.props;
+        const {username, email, password} = this.state;
 
         return (
             <React.Fragment >
@@ -59,49 +83,54 @@ class LogIn extends React.Component {
                                     </Grid>
                                     <form>
                                         <Grid container spacing={3}>
-                                            <Grid item xs="12" md={5}>
+                                            <Grid item xs={12} md={5}>
                                                 <Divider/>
                                             </Grid>
-                                            <Grid item xs="12" md={2}></Grid>
-                                            <Grid item xs="12" md={5}>
+                                            <Grid item xs={12} md={2}></Grid>
+                                            <Grid item xs={12} md={5}>
                                                 <Divider/>
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <TextField
+                                                    required
                                                     fullWidth
                                                     label="Nombre"
-                                                    name="name"
+                                                    placeholder="username"
+                                                    name="username"
                                                     type="text"
-                                                    variant="outlined" />
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <TextField
-                                                fullWidth
-                                                label="Apellido"
-                                                name="lastname"
-                                                type="text"
-                                                variant="outlined"
+                                                    variant="outlined"
+                                                    value={username}
+                                                    onChange={this.onChangeHandler}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <TextField
+                                                    required
                                                     fullWidth
                                                     label="Correo electrónico"
+                                                    placeholder="user@gmail.com"
                                                     name="email"
                                                     type="email"
-                                                    variant="outlined" />
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <TextField
-                                                fullWidth
-                                                label="Contraseña"
-                                                name="password"
-                                                type="password"
-                                                variant="outlined"
+                                                    variant="outlined"
+                                                    value={email}
+                                                    onChange={this.onChangeHandler}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
-                                                <Button color="primary" fullWidth variant="contained" component={ Link }  to={'/'}>
+                                                <TextField
+                                                    required
+                                                    fullWidth
+                                                    label="Contraseña"
+                                                    placeholder="BD4acd250"
+                                                    name="password"
+                                                    type="password"
+                                                    variant="outlined"
+                                                    value={password}
+                                                    onChange={this.onChangeHandler}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Button color="primary" fullWidth variant="contained" onClick={this.createAccountHandler}>
                                                     Registrarme
                                                 </Button>
                                             </Grid>
@@ -117,8 +146,8 @@ class LogIn extends React.Component {
     }
 }
 
-LogIn.propTypes = {
+CreateAccount.propTypes = {
     classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles) (LogIn);
+export default withStyles(styles) (CreateAccount);

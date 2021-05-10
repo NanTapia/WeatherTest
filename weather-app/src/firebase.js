@@ -12,5 +12,17 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+
+
+const providerGoogle = new firebase.auth.GoogleAuthProvider();
+export const logInWithGoogle = () => {
+    auth.signInWithPopup( providerGoogle );
+};
+
+const providerFacebook = new firebase.auth.FacebookAuthProvider();
+export const logInWithFacebook = () => {
+    auth.signInWithPopup( providerFacebook );
+};

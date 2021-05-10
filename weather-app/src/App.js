@@ -1,21 +1,13 @@
-import React from 'react';
+import React, { useContext } from "react";
 import './App.css';
-
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-
-import Dashboard from './containers/Dashboard'
-import CreateAccount from './containers/CreateAccount'
-import LogIn from './containers/LogIn'
+import AuthUserProvider from './providers/UserProvider'
+import Application from "./containers/Application";
 
 function App() {
   return (
-    <Router>
-      <Switch>
-          <Route exact path='/' component={LogIn} />
-          <Route path='/createAccount' component={CreateAccount} />
-          <Route path='/dashboard' component={Dashboard} />
-      </Switch>
-    </Router>
+      <AuthUserProvider>
+          <Application />
+      </AuthUserProvider>
   );
 }
 

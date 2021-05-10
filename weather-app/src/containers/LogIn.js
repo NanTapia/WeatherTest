@@ -8,12 +8,10 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faFacebookSquare,
-    faGoogle,
-} from "@fortawesome/free-brands-svg-icons";
+import { faFacebookSquare, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { logInWithGoogle } from "../firebase";
+import { logInWithFacebook } from "../firebase";
 
 const styles = theme => ({
     boxContainer:{
@@ -41,8 +39,37 @@ const styles = theme => ({
 
 class LogIn extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            email: "",
+            password: "",
+            error: null,
+        };
+    }
+
+    onChangeHandler = (e) => {
+        const {name, value} = e.target;
+
+        if(name === 'email') {
+            this.setState({email: value});
+        }
+        else if(name === 'password'){
+            this.setState({password: value});
+        }
+    };
+
+    logInDefaultHandler = (e) => {
+        e.preventDefault();
+        console.log("____________")
+        console.log(this.state.email)
+        console.log(this.state.password)
+    }
+
     render() {
         const {classes} = this.props;
+        const {email, password} = this.state;
 
         return (
             <React.Fragment >
@@ -63,6 +90,7 @@ class LogIn extends React.Component {
                                                 color="primary"
                                                 className={classes.button}
                                                 startIcon={<FontAwesomeIcon icon={faFacebookSquare} />}
+                                                onClick={() => { logInWithFacebook(); }}
                                             >
                                                 facebook
                                             </Button>
@@ -74,6 +102,7 @@ class LogIn extends React.Component {
                                                 color="secondary"
                                                 className={classes.button}
                                                 startIcon={<FontAwesomeIcon icon={faGoogle} />}
+                                                onClick={() => { logInWithGoogle(); }}
                                             >
                                                 Google
                                             </Button>
@@ -82,38 +111,47 @@ class LogIn extends React.Component {
                                     <Grid container className={classes.marginForm}>
                                         <form>
                                             <Grid container spacing={3}>
-                                                <Grid item xs="12" md={3}>
+                                                <Grid item xs={12} md={3}>
                                                     <Divider/>
                                                 </Grid>
-                                                <Grid item xs="12" md={6}>
+                                                <Grid item xs={12} md={6}>
                                                     Ingresar con correo electrónico
                                                 </Grid>
-                                                <Grid item xs="12" md={3}>
+                                                <Grid item xs={12} md={3}>
                                                     <Divider/>
                                                 </Grid>
                                                 <Grid item xs={12}>
                                                     <Grid container spacing={2}>
                                                     <Grid item xs={12}>
                                                         <TextField
+                                                            required
                                                             fullWidth
                                                             label="Correo electrónico"
+                                                            placeholder="user@gmail.com"
                                                             name="email"
                                                             type="email"
-                                                            variant="outlined" />
+                                                            variant="outlined"
+                                                            value={email}
+                                                            onChange={this.onChangeHandler}
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={12}>
                                                         <TextField
-                                                        fullWidth
-                                                        label="Contraseña"
-                                                        name="password"
-                                                        type="password"
-                                                        variant="outlined"
+                                                            required
+                                                            fullWidth
+                                                            label="Contraseña"
+                                                            placeholder="BD4acd250"
+                                                            name="password"
+                                                            type="password"
+                                                            variant="outlined"
+                                                            value={password}
+                                                            onChange={this.onChangeHandler}
                                                         />
                                                     </Grid>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid item xs={12}>
-                                                    <Button color="primary" fullWidth variant="contained" component={ Link }  to={'/dashboard'}>
+                                                    <Button color="primary" fullWidth variant="contained" onClick={this.logInDefaultHandler}>
                                                         Iniciar sesión
                                                     </Button>
                                                 </Grid>
