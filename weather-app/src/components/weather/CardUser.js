@@ -7,27 +7,41 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { UserContext } from "../../providers/UserProvider";
 import {auth} from "../../firebase";
+import { render } from '@testing-library/react';
 
-const CardUser = () =>  {
 
-    const user = useContext(UserContext);
-    const {photoURL,displayName} = user;
+import { browserHistory } from 'react-router';
 
-    return (
-        <Box mt={1}>
-            <Grid container direction="column" justify="center" alignItems="center">
-                <Grid item xs={12}>
-                    <Avatar alt="Remy Sharp" src={photoURL} />
+class CardUser extends React.Component {
+
+    static contextType = UserContext
+
+    async logOut(e) {
+        e.preventDefault();
+        await auth.signOut()
+        window.location.href="/";
+    }
+
+    render(){
+
+        const {photoURL, displayName} =this.context;
+
+        return (
+            <Box mt={1}>
+                <Grid container direction="column" justify="center" alignItems="center">
+                    <Grid item xs={12}>
+                        <Avatar alt="Remy Sharp" src={photoURL} />
+                    </Grid>
+                    <Grid item xs={12} style={{padding: "2% 0% 8% 0%"}}>
+                        {displayName}
+                        <IconButton aria-label="exit"  size="small" style={{color: "white"}} onClick = {this.logOut}>
+                            <ExitToAppIcon fontSize="inherit" />
+                        </IconButton>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} style={{padding: "2% 0% 8% 0%"}}>
-                    {displayName}
-                    <IconButton aria-label="exit"  size="small" style={{color: "white"}} onClick = {() => {auth.signOut()}}> 
-                        <ExitToAppIcon fontSize="inherit" />
-                    </IconButton>
-                </Grid>
-            </Grid>
-        </Box>
-    );
+            </Box>
+        );
+    }
 }
 
 

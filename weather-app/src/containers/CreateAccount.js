@@ -8,8 +8,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
+import { auth, generateUserDocument } from "../firebase";
 
 const styles = theme => ({
     boxContainer:{
@@ -58,10 +58,35 @@ class CreateAccount extends React.Component {
 
     createAccountHandler = (e) => {
         e.preventDefault();
-        console.log("____________")
-        console.log(this.state.username)
-        console.log(this.state.email)
-        console.log(this.state.password)
+
+        const {username, email, password} = this.state;
+
+        auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+
+            console.log("usuario creado")
+
+            let user = userCredential.user;
+
+            user.updateProfile({
+                displayName: username
+            }).then(function() {
+                console.log("ready: add name")
+            }, function(error) {
+                console.log("error: add name")
+            });
+
+            generateUserDocument(user, {username});
+        })
+        .catch((error) => {
+            console.log("Error al crear usuario")
+        });
+
+        this.setState({
+            username:"",
+            email:"",
+            password:"",
+        })
     }
 
     render() {
@@ -94,8 +119,8 @@ class CreateAccount extends React.Component {
                                                 <TextField
                                                     required
                                                     fullWidth
-                                                    label="Nombre"
-                                                    placeholder="username"
+                                                    label="Nombre completo"
+                                                    placeholder="José Collí"
                                                     name="username"
                                                     type="text"
                                                     variant="outlined"

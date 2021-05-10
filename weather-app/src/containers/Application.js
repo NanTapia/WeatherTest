@@ -14,7 +14,7 @@ function Application() {
         :
             <Router>
                 <LogIn path="/" />
-                <CreateAccount path="signUp" />
+                <CreateAccount path="/createAccount" />
             </Router>
     );
 }

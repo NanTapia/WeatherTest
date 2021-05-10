@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookSquare, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { logInWithGoogle } from "../firebase";
 import { logInWithFacebook } from "../firebase";
+import { auth } from "../firebase";
 
 const styles = theme => ({
     boxContainer:{
@@ -62,9 +63,16 @@ class LogIn extends React.Component {
 
     logInDefaultHandler = (e) => {
         e.preventDefault();
-        console.log("____________")
-        console.log(this.state.email)
-        console.log(this.state.password)
+
+        const {email, password} = this.state;
+
+        auth.signInWithEmailAndPassword(email, password)
+        .then((user) => {
+            console.log("autenticado")
+        })
+        .catch((error) => {
+            console.log("autenticado")
+        });
     }
 
     render() {
