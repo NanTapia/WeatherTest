@@ -7,7 +7,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Typography from '@material-ui/core/Typography';
 import CardUser from "../weather/CardUser"
 import Search from '../weather/Search'
 

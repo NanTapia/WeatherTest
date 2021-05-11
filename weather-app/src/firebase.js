@@ -2,7 +2,6 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyDa9wantYMGjUAtzEph5uFWVXyZFqPgcL0",
     authDomain: "weather-firebase-81c94.firebaseapp.com",

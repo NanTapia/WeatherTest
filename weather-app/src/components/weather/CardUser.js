@@ -1,4 +1,4 @@
-import React, { useContext }  from 'react';
+import React from 'react';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -7,10 +7,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { UserContext } from "../../providers/UserProvider";
 import {auth} from "../../firebase";
-import { render } from '@testing-library/react';
-
-
-import { browserHistory } from 'react-router';
 
 class CardUser extends React.Component {
 
