@@ -5,7 +5,7 @@ import LogIn from "./LogIn";
 import CreateAccount from "./CreateAccount";
 import Dashboard from "./Dashboard";
 
-function Application() {
+function Routes() {
     const user = useContext(UserContext);
 
     return (
@@ -19,4 +19,4 @@ function Application() {
     );
 }
 
-export default Application;
+export default Routes;

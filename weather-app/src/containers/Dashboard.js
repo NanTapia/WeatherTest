@@ -4,30 +4,76 @@ import {withStyles} from "@material-ui/core/styles";
 import Grid from '@material-ui/core/Grid';
 import CardWeather from '../components/weather/CardWeather'
 import CardHistory from '../components/weather/CardHistory'
-
 import AppBar from  "../components/ui/AppBar"
+import axios from 'axios';
+
+const apiKey = process.env.REACT_APP_API_KEY;
 
 const styles = theme => ({
     root:{
-        padding:"5%",
         flexGrow: 1,
+        backgroundColor: "#e3f2fd",
+        minHeight:"100vh"
+    },
+    containerWeather:{
+        padding:"2% 1% 0% 2%"
+    },
+    containerHistory:{
+        padding:"2% 2% 0% 1%"
     }
 });
 
 class Dashboard extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            city: "",
+            weather: "",
+        };
+    }
+
+    onChangeHandler = (e) => {
+        const {value} = e.target;
+
+        this.setState({
+            city: value
+        })
+    };
+
+    searchHandler = (e) => {
+        e.preventDefault();
+
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${apiKey}&units=metric`;
+
+        axios.get(apiUrl)
+        .then(response => {
+            this.setState({
+                weather: response.data
+            })
+        })
+        .catch(error => console.error('timeout exceeded'))
+    }
+
     render() {
         const {classes} = this.props;
+        const {city, weather} = this.state
 
         return (
             <React.Fragment >
-                <AppBar/>
                 <div className={classes.root}>
-                    <Grid container direction="row" justify="center" spacing={3} >
-                        <Grid item xs={12} md={8}>
-                            <CardWeather/>
+                    <AppBar
+                        city={city}
+                        weather={weather}
+                        onChangeHandler={this.onChangeHandler}
+                        searchHandler={this.searchHandler}
+                    />
+                    <Grid container direction="row" justify="center" alignItems="center">
+                        <Grid item xs={12} md={8} className={classes.containerWeather}>
+                            <CardWeather weather={weather}/>
                         </Grid>
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} md={4} className={classes.containerHistory}>
                             <CardHistory/>
                         </Grid>
                     </Grid>

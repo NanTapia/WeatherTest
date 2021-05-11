@@ -1,65 +1,56 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCloud } from "@fortawesome/free-solid-svg-icons";
 
 const styles = theme => ({
     root: {
-        border: '1px solid #bdbdbd',
-        padding: '5%',
-        minHeight: '50vh'
-    },
-    bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-    },
-    title: {
-    fontSize: 14,
-    },
-    pos: {
-    marginBottom: 12,
+        backgroundColor:"white",
+        borderRadius:"2%",
+        padding:"10%",
+        minHeight:"100%",
+        alignText:"center",
     },
 });
 
 class CardWeather extends React.Component {
 
     render() {
-        const {classes} = this.props;
+        const { classes, weather } = this.props;
 
         return (
-            <React.Fragment>
+            <React.Fragment >
                 <div className={classes.root}>
-                    <Grid container spacing={3} >
-                        <Grid item xs={12}>
-                            <Card>
-                                <CardContent>
-                                    <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                    Word of the Day
-                                    </Typography>
-                                    <Typography variant="h5" component="h2">
-                                    be lent
-                                    </Typography>
-                                    <Typography className={classes.pos} color="textSecondary">
-                                    adjective
-                                    </Typography>
-                                    <Typography variant="body2" component="p">
-                                    well meaning and kindly.
-                                    <br />
-                                    {'"a benevolent smile"'}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <Button size="small">Learn More</Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    </Grid>
+                    {weather ?
+                        <div style={{textAlign:"center"}}>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            {new Date().toLocaleString("es-MX", {timeZone: weather.timeZone})}
+                            </Typography>
+                            <Typography variant="h5" component="h2">
+                                {weather.name}, {weather.sys.country}
+                            </Typography>
+                            <Typography variant="h4" component="h2" style={{marginTop:"5%", marginBottom:"2%"}}>
+                                <FontAwesomeIcon icon={faCloud} style={{color:"gray"}}/> &nbsp;
+                                {weather.main.temp} °C
+                            </Typography>
+                            <Typography className={classes.pos} color="textSecondary">
+                                Feels like {weather.main.feels_like} °C. {weather.weather[0].main}, {weather.weather[0].description}
+                            </Typography>
+                            <Typography variant="body2" component="p">
+                                {weather.wind.speed} m/s ESE &nbsp;&nbsp;&nbsp;  {weather.main.pressure} hPa
+                                <br />
+                                Humidity: {weather.main.humidity} % &nbsp;&nbsp;&nbsp;  UV: 11
+                                <br />
+                                Dewp point: 16°C &nbsp;&nbsp;&nbsp; Visibility: {weather.visibility}
+                            </Typography>
+                        </div>
+                    :
+                        <div style={{textAlign:"center"}}>
+                            <img src={window.location.origin + '/images/weather.gif'} className="img-fluid" alt="static view" width="50%"  />
+                        </div>
+                    }
                 </div>
             </React.Fragment>
         );

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar(props) {
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -77,10 +77,12 @@ export default function PrimarySearchAppBar() {
         <div className={classes.grow}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title} style={{position:"inline"}}>
-                        Ciudad
-                    </Typography>
-                    <Search/>
+                    <Search
+                        city={props.city}
+                        weather={props.weather}
+                        onChangeHandler={props.onChangeHandler}
+                        searchHandler={props.searchHandler}
+                    />
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <CardUser/>

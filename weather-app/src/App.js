@@ -1,12 +1,12 @@
 import React from "react";
 import './App.css';
 import AuthUserProvider from './providers/UserProvider'
-import Application from "./containers/Application";
+import Routes from "./containers/Routes";
 
 function App() {
   return (
       <AuthUserProvider>
-          <Application />
+          <Routes />
       </AuthUserProvider>
   );
 }
