@@ -31,6 +31,7 @@ class Dashboard extends React.Component {
         this.state = {
             city: "",
             weather: "",
+            errorSearch:"",
         };
     }
 
@@ -50,15 +51,21 @@ class Dashboard extends React.Component {
         axios.get(apiUrl)
         .then(response => {
             this.setState({
-                weather: response.data
+                weather: response.data,
+                errorSearch: false,
             })
         })
-        .catch(error => console.error('timeout exceeded'))
+        .catch(error => {
+            this.setState({
+                messageAlert: "error",
+                errorSearch: true,
+            })
+        })
     }
 
     render() {
         const {classes} = this.props;
-        const {city, weather} = this.state
+        const {city, weather, errorSearch} = this.state
 
         return (
             <React.Fragment >
@@ -71,7 +78,7 @@ class Dashboard extends React.Component {
                     />
                     <Grid container direction="row" justify="center" alignItems="center">
                         <Grid item xs={12} md={8} className={classes.containerWeather}>
-                            <CardWeather weather={weather}/>
+                            <CardWeather weather={weather} errorSearch={errorSearch}/>
                         </Grid>
                         <Grid item xs={12} md={4} className={classes.containerHistory}>
                             <CardHistory/>

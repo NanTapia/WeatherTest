@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCloud } from "@fortawesome/free-solid-svg-icons";
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const styles = theme => ({
     root: {
@@ -18,7 +17,7 @@ const styles = theme => ({
 class CardWeather extends React.Component {
 
     render() {
-        const { classes, weather } = this.props;
+        const { classes, weather, errorSearch } = this.props;
 
         return (
             <React.Fragment >
@@ -32,7 +31,7 @@ class CardWeather extends React.Component {
                                 {weather.name}, {weather.sys.country}
                             </Typography>
                             <Typography variant="h4" component="h2" style={{marginTop:"5%", marginBottom:"2%"}}>
-                                <FontAwesomeIcon icon={faCloud} style={{color:"gray"}}/> &nbsp;
+                                <img src={window.location.origin + '/images/iconCloud.gif'} className="img-fluid" alt="static view" width="6%" /> &nbsp;
                                 {weather.main.temp} °C
                             </Typography>
                             <Typography className={classes.pos} color="textSecondary">
@@ -45,10 +44,20 @@ class CardWeather extends React.Component {
                                 <br />
                                 Dewp point: 16°C &nbsp;&nbsp;&nbsp; Visibility: {weather.visibility}
                             </Typography>
+                            {errorSearch &&
+                                <Alert variant="filled" severity="error" size="small" style={{margin:"5% 25% 0% 25%"}}>
+                                    Oops... ocurrió un problema en la consulta.
+                                </Alert>
+                            }
                         </div>
                     :
                         <div style={{textAlign:"center"}}>
-                            <img src={window.location.origin + '/images/weather.gif'} className="img-fluid" alt="static view" width="50%"  />
+                            <img src={window.location.origin + '/images/weather.gif'} className="img-fluid" alt="static view" width="50%" />
+                            {errorSearch &&
+                                <Alert variant="filled" severity="error" size="small" style={{margin:"5% 25% 0% 25%"}}>
+                                    Oops... ocurrió un problema en la consulta.
+                                </Alert>
+                            }
                         </div>
                     }
                 </div>

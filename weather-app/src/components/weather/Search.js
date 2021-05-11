@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import { withStyles, fade} from '@material-ui/core/styles';
+import { withStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
@@ -19,20 +19,13 @@ const styles = theme => ({
         color:"darkblue",
         '&:hover': {
             background: "rgba(255,255,255,.8)",
+            color:"darkblue",
         },
     }
 });
 
 
 class Search extends React.Component  {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            city: "",
-        };
-    }
 
     render() {
 
@@ -57,7 +50,7 @@ class Search extends React.Component  {
                                     onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                                     endAdornment={
                                         <InputAdornment position="end">
-                                            <IconButton aria-label="search" onClick={searchHandler}>
+                                            <IconButton aria-label="search" onClick={searchHandler} disabled={city !== "" && city !== null ? false : true}>
                                                 <SearchIcon />
                                             </IconButton>
                                         </InputAdornment>
