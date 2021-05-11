@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
         this.state = {
             city: "",
             weather: "",
-            errorSearch:"",
+            errorSearch:false,
         };
     }
 

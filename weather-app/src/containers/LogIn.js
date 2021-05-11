@@ -13,6 +13,7 @@ import { faFacebookSquare, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { logInWithGoogle } from "../firebase";
 import { logInWithFacebook } from "../firebase";
 import { auth } from "../firebase";
+import { Alert } from '@material-ui/lab';
 
 const styles = theme => ({
     boxContainer:{
@@ -46,7 +47,7 @@ class LogIn extends React.Component {
         this.state = {
             email: "",
             password: "",
-            error: null,
+            errorLogin: false,
         };
     }
 
@@ -54,30 +55,36 @@ class LogIn extends React.Component {
         const {name, value} = e.target;
 
         if(name === 'email') {
-            this.setState({email: value});
+            this.setState({
+                email: value
+            });
         }
         else if(name === 'password'){
-            this.setState({password: value});
+            this.setState({
+                password: value
+            });
         }
     };
 
-    logInDefaultHandler = (e) => {
+    logInDefaultHandler = async (e) => {
         e.preventDefault();
 
         const {email, password} = this.state;
 
-        auth.signInWithEmailAndPassword(email, password)
+        await auth.signInWithEmailAndPassword(email, password)
         .then((user) => {
             console.log("autenticado")
         })
         .catch((error) => {
-            console.log("autenticado")
+            this.setState({
+                errorLogin: true
+            })
         });
     }
 
     render() {
         const {classes} = this.props;
-        const {email, password} = this.state;
+        const {email, password, errorLogin} = this.state;
 
         return (
             <React.Fragment >
@@ -130,36 +137,49 @@ class LogIn extends React.Component {
                                                 </Grid>
                                                 <Grid item xs={12}>
                                                     <Grid container spacing={2}>
-                                                    <Grid item xs={12}>
-                                                        <TextField
-                                                            required
-                                                            fullWidth
-                                                            label="Correo electrónico"
-                                                            placeholder="user@gmail.com"
-                                                            name="email"
-                                                            type="email"
-                                                            variant="outlined"
-                                                            value={email}
-                                                            onChange={this.onChangeHandler}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={12}>
-                                                        <TextField
-                                                            required
-                                                            fullWidth
-                                                            label="Contraseña"
-                                                            placeholder="BD4acd250"
-                                                            name="password"
-                                                            type="password"
-                                                            variant="outlined"
-                                                            value={password}
-                                                            onChange={this.onChangeHandler}
-                                                        />
-                                                    </Grid>
+                                                        {errorLogin &&
+                                                            <Grid item xs={12}>
+                                                                <Alert variant="filled" severity="error" size="small">
+                                                                    <strong>Error:</strong> El usuario y contraseña son incorrectos.
+                                                                </Alert>
+                                                            </Grid>
+                                                        }
+                                                        <Grid item xs={12}>
+                                                            <TextField
+                                                                required
+                                                                fullWidth
+                                                                label="Correo electrónico"
+                                                                placeholder="user@gmail.com"
+                                                                name="email"
+                                                                type="email"
+                                                                variant="outlined"
+                                                                value={email}
+                                                                onChange={this.onChangeHandler}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12}>
+                                                            <TextField
+                                                                required
+                                                                fullWidth
+                                                                label="Contraseña"
+                                                                placeholder="BD4acd250"
+                                                                name="password"
+                                                                type="password"
+                                                                variant="outlined"
+                                                                value={password}
+                                                                onChange={this.onChangeHandler}
+                                                            />
+                                                        </Grid>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid item xs={12}>
-                                                    <Button color="primary" fullWidth variant="contained" onClick={this.logInDefaultHandler}>
+                                                    <Button
+                                                        color="primary"
+                                                        fullWidth
+                                                        variant="contained"
+                                                        onClick={this.logInDefaultHandler}
+                                                        disabled={(email !== "" && email !== null) && (password !== "" && password !== null) ? false: true}
+                                                    >
                                                         Iniciar sesión
                                                     </Button>
                                                 </Grid>

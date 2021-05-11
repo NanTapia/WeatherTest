@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import { auth, generateUserDocument } from "../firebase";
+import { Alert } from '@material-ui/lab';
 
 const styles = theme => ({
     boxContainer:{
@@ -38,7 +39,7 @@ class CreateAccount extends React.Component {
             username: "",
             email: "",
             password: "",
-            error: null,
+            errorCreate: false,
         };
     }
 
@@ -56,15 +57,13 @@ class CreateAccount extends React.Component {
         }
     };
 
-    createAccountHandler = (e) => {
+    createAccountHandler = async (e) => {
         e.preventDefault();
 
         const {username, email, password} = this.state;
 
-        auth.createUserWithEmailAndPassword(email, password)
+        await auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-
-            console.log("usuario creado")
 
             let user = userCredential.user;
 
@@ -79,7 +78,9 @@ class CreateAccount extends React.Component {
             generateUserDocument(user, {username});
         })
         .catch((error) => {
-            console.log("Error al crear usuario")
+            this.setState({
+                errorCreate: true
+            })
         });
 
         this.setState({
@@ -91,7 +92,7 @@ class CreateAccount extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const {username, email, password} = this.state;
+        const {username, email, password, errorCreate} = this.state;
 
         return (
             <React.Fragment >
@@ -115,6 +116,13 @@ class CreateAccount extends React.Component {
                                             <Grid item xs={12} md={5}>
                                                 <Divider/>
                                             </Grid>
+                                            {errorCreate &&
+                                                <Grid item xs={12}>
+                                                    <Alert variant="filled" severity="error" size="small">
+                                                        <strong>Error:</strong> La información ingresada no es válida.
+                                                    </Alert>
+                                                </Grid>
+                                            }
                                             <Grid item xs={12}>
                                                 <TextField
                                                     required
@@ -155,7 +163,16 @@ class CreateAccount extends React.Component {
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
-                                                <Button color="primary" fullWidth variant="contained" onClick={this.createAccountHandler}>
+                                                <Button
+                                                    color="primary"
+                                                    fullWidth
+                                                    variant="contained"
+                                                    onClick={this.createAccountHandler}
+                                                    disabled={
+                                                        (email !== "" && email !== null) && (password !== "" && password !== null) && (username !== "" && username !== null)?
+                                                        false: true
+                                                    }
+                                                >
                                                     Registrarme
                                                 </Button>
                                             </Grid>
