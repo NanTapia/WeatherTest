@@ -67,7 +67,7 @@ class CreateAccount extends React.Component {
 
             let user = userCredential.user;
 
-            user.updateProfile({
+            auth.currentUser.updateProfile({
                 displayName: username
             }).then(function() {
                 console.log("ready: add name")
