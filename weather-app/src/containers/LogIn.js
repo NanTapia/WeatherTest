@@ -14,6 +14,13 @@ import { logInWithGoogle } from "../firebase";
 import { logInWithFacebook } from "../firebase";
 import { auth } from "../firebase";
 import { Alert } from '@material-ui/lab';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel'
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 const styles = theme => ({
     boxContainer:{
@@ -48,6 +55,7 @@ class LogIn extends React.Component {
             email: "",
             password: "",
             errorLogin: false,
+            showPassword: false,
         };
     }
 
@@ -81,6 +89,19 @@ class LogIn extends React.Component {
             })
         });
     }
+
+    handleClickShowPassword = () => {
+
+        const {showPassword} = this.state;
+
+        this.setState({
+            showPassword: !showPassword
+        })
+    };
+
+    handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     render() {
         const {classes} = this.props;
@@ -158,17 +179,29 @@ class LogIn extends React.Component {
                                                             />
                                                         </Grid>
                                                         <Grid item xs={12}>
-                                                            <TextField
-                                                                required
-                                                                fullWidth
-                                                                label="Contraseña"
-                                                                placeholder="BD4acd250"
-                                                                name="password"
-                                                                type="password"
-                                                                variant="outlined"
-                                                                value={password}
-                                                                onChange={this.onChangeHandler}
-                                                            />
+                                                            <FormControl variant="outlined" fullWidth>
+                                                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                                                <OutlinedInput
+                                                                    id="outlined-adornment-password"
+                                                                    type={this.state.showPassword ? 'text' : 'password'}
+                                                                    value={password}
+                                                                    name="password"
+                                                                    onChange={this.onChangeHandler}
+                                                                    endAdornment={
+                                                                    <InputAdornment position="end">
+                                                                        <IconButton
+                                                                        aria-label="toggle password visibility"
+                                                                        onClick={this.handleClickShowPassword}
+                                                                        onMouseDown={this.handleMouseDownPassword}
+                                                                        edge="end"
+                                                                        >
+                                                                        {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                                                        </IconButton>
+                                                                    </InputAdornment>
+                                                                    }
+                                                                    labelWidth={70}
+                                                                />
+                                                            </FormControl>
                                                         </Grid>
                                                     </Grid>
                                                 </Grid>
