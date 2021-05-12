@@ -10,7 +10,7 @@ const styles = theme => ({
     root: {
         backgroundColor:"white",
         borderRadius:"2%",
-        padding:"17%",
+        padding:"8%",
         minHeight:"100%",
         alignText:"center",
     },
@@ -19,39 +19,33 @@ const styles = theme => ({
 class CardHistory extends React.Component {
 
     render() {
-        const {classes} = this.props;
+        const {classes, history} = this.props;
 
+        console.log(history)
         return (
                 <React.Fragment>
                     <div className={classes.root}>
-                        <Grid container spacing={5} >
-                            <Grid item xs={12}>
-                                <Card>
-                                    <CardContent>
-                                        <Typography variant="h5" component="h2">
-                                            Puebla, MX
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
+                        <Grid container spacing={4} >
+
+                            <Grid item xs={12} style={{textAlign:"center"}}>
+                                <Typography variant="h5" component="h2">
+                                    Historial
+                                </Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Card>
-                                    <CardContent>
-                                        <Typography variant="h5" component="h2">
-                                            Puebla, MX
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Card>
-                                    <CardContent>
-                                        <Typography variant="h5" component="h2">
-                                            Puebla, MX
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
+                            {   history && history.map(function(item, index) {
+                                    return (
+                                        <Grid item xs={12} key={index}>
+                                            <Card>
+                                                <CardContent>
+                                                    <Typography variant="h5" component="h2">
+                                                        {item}
+                                                    </Typography>
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+                                    )
+                                })
+                            }
                         </Grid>
                     </div>
                 </React.Fragment>

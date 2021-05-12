@@ -32,6 +32,7 @@ class Dashboard extends React.Component {
             city: "",
             weather: "",
             errorSearch:false,
+            history:[]
         };
     }
 
@@ -45,14 +46,27 @@ class Dashboard extends React.Component {
 
     searchHandler = (e) => {
         e.preventDefault();
+        const {history} = this.state;
 
         const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${apiKey}&units=metric`;
 
         axios.get(apiUrl)
         .then(response => {
+
+            let dataHistory = response.data.name + ", " +response.data.sys.country;
+            let arrayHistory = history;
+
+            if(arrayHistory.length < 3){
+                arrayHistory.push(dataHistory)
+            }else{
+                arrayHistory.shift()
+                arrayHistory.push(dataHistory)
+            }
+
             this.setState({
                 weather: response.data,
                 errorSearch: false,
+                history: arrayHistory
             })
         })
         .catch(error => {
@@ -65,7 +79,7 @@ class Dashboard extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const {city, weather, errorSearch} = this.state
+        const {city, weather, errorSearch, history} = this.state
 
         return (
             <React.Fragment >
@@ -81,7 +95,7 @@ class Dashboard extends React.Component {
                             <CardWeather weather={weather} errorSearch={errorSearch}/>
                         </Grid>
                         <Grid item xs={12} md={4} className={classes.containerHistory}>
-                            <CardHistory/>
+                            <CardHistory history={history}/>
                         </Grid>
                     </Grid>
                 </div>
